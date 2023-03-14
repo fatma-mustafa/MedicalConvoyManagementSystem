@@ -6,4 +6,4 @@ from .models import SocialMedia
 class SocialMediaApi(viewsets.ModelViewSet):
     queryset = SocialMedia.objects.all()
     serializer_class = SocialMediaSerializer
-    permission_classes = []
+    permission_classes = [permissions.IsAuthenticated]

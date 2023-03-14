@@ -1,9 +1,13 @@
 from django.urls import include, path
 from rest_framework import routers
 from website import api as website
+from database import api as database
 from .views import test
+
 router = routers.DefaultRouter()
-router.register('social_media', website.SocialMediaApi)
+
+router.register('patient', database.PatientApi)
+router.register('Urin Analysis Report', database.UrinanalysisReportApi)
 
 urlpatterns = [
     path('', include(router.urls)),
