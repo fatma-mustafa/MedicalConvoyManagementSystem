@@ -7,7 +7,7 @@ from .views import test
 router = routers.DefaultRouter()
 
 router.register('patient', database.PatientApi)
-router.register('Urin Analysis Report', database.UrinanalysisReportApi)
+router.register('UrinAnalysisReport', database.UrinanalysisReportApi)
 
 urlpatterns = [
     path('', include(router.urls)),

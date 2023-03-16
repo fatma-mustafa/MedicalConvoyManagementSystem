@@ -15,6 +15,7 @@ class Patient(models.Model):
         return f"{self.first_name} {self.last_name}" 
     
 class UrinAnalysisReport(models.Model):
+    status = models.CharField(max_length=10, choices=[('pending', 'Pending'), ('finished', 'Finished'), ('cancelled', 'Cancelled')])
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     report_date = models.DateField(auto_now_add=True)
     lab_code = models.CharField(max_length=50)
@@ -46,5 +47,6 @@ class UrinAnalysisReport(models.Model):
     bacteria = models.CharField(max_length=20)
     yeast = models.CharField(max_length=20)
     sperm = models.CharField(max_length=20)
+    
     def __str__(self):
         return f"{self.patient.first_name} {self.patient.last_name} - Urinalysis Report ({self.report_date})"
