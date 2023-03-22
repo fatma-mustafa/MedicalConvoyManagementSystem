@@ -6,3 +6,5 @@ class UrinAnalysisReportFilter(django_filters.FilterSet):
     class Meta:
         model = UrinAnalysisReport
         fields = '__all__'
+
+    
