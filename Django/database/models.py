@@ -1,7 +1,7 @@
 from django.db import models
 from .utils import *
 
-class Family_History_Info(models.Model):
+class Family_History(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -13,7 +13,6 @@ class Contraception_Info_Method(models.Model):
 class Contraception_Info(models.Model):
     contraception = models.BooleanField(default=False)
     methods = models.ManyToManyField(Contraception_Method)
- 
 
 # Create your models here.
 class Patient(models.Model):
@@ -27,15 +26,15 @@ class Patient(models.Model):
     education_level = models.CharField(max_length=50, choices=[('illiterate', 'Illiterate'), ('read and write', 'Read and Write'), ('primary', 'Primary'), ('preparatory', 'Preparatory'), ('secondary', 'Secondary'), ('university', 'University'), ('postgraduate', 'Postgraduate')], default='illiterate')
     smoking = models.BooleanField(default=False)
     smoking_cessation = models.BooleanField(default=False)
-    #mensturation = models.CharField(max_length=50, choices=[('regular', 'Regular'), ('irregular', 'Irregular'), ('menopause', 'Menopause')], default='regular')
-    #gravidal_number = models.IntegerField(default=0)
-    #abortion_number = models.IntegerField(default=0)
-    #contraception = models.OneToOneField(Contraception_Info, on_delete=models.CASCADE)
-    family_history = models.ManyToManyField(Family_History_Info)
+
+    family_history = models.ManyToManyField(Family_History)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}" 
 
+class Complaint(models.Model):
+    symptom = models.CharField(max_length=50)
+    code = models.ForeignKey(Patient, on_delete=models.CASCADE)
 
 class UrinAnalysisReport(models.Model):
     status = models.CharField(max_length=10, choices=[('pending', 'Pending'), ('finished', 'Finished'), ('cancelled', 'Cancelled')])

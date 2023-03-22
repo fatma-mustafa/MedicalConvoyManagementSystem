@@ -12,9 +12,9 @@ class UrinanalysisReportSerializer(serializers.HyperlinkedModelSerializer):
         model = UrinAnalysisReport
         fields = "__all__"
 
-class Family_History_Info_Serializer(serializers.HyperlinkedModelSerializer):
+class Family_History_Serializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Family_History_Info
+        model = Family_History
         fields = "__all__"
 
 class Contraception_Method_Serializer(serializers.HyperlinkedModelSerializer):

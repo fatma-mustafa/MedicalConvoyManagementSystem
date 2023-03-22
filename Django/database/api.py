@@ -17,9 +17,9 @@ class UrinanalysisReportApi(viewsets.ModelViewSet):
     permission_classes = []
     filterset_class = UrinAnalysisReportFilter
     
-class Family_History_Info_Api(viewsets.ModelViewSet):
-    queryset = Family_History_Info.objects.all()
-    serializer_class = Family_History_Info_Serializer
+class Family_History_Api(viewsets.ModelViewSet):
+    queryset = Family_History.objects.all()
+    serializer_class = Family_History_Serializer
     permission_classes = []
 
 class Contraception_Method_Api(viewsets.ModelViewSet):

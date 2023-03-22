@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 
 router.register('patient', database.PatientApi)
 router.register('UrinAnalysisReport', database.UrinanalysisReportApi)
-router.register('Family_History_Info', database.Family_History_Info_Api)
+router.register('Family_History_Info', database.Family_History_Api)
 router.register('Contraception_Methods', database.Contraception_Method_Api)
 #router.register('Contraception_Info', database.Contraception_Info_Api)
 urlpatterns = [
