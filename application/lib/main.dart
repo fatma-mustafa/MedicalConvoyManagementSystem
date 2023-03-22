@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  // For performance (UI smoothness) debug (Profile mode)
+  // Note: there are various type of performance like
+  PerformanceOverlay.allEnabled(
+    checkerboardOffscreenLayers: true,
+  );
   runApp(const App());
 }
 
