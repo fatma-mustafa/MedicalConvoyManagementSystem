@@ -10,7 +10,7 @@
 			"name": "Patient",
 			"item": [
 				{
-					"name": "Retrieve All Patients",
+					"name": "All Patients",
 					"id": "8739345e-25ed-432b-b779-45f947dfed2e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -38,12 +38,15 @@
 					"response": []
 				},
 				{
-					"name": "Add New Pateint",
+					"name": "New Pateint",
 					"id": "383ba56e-7332-4f83-aef0-71854a3c8f36",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -51,47 +54,71 @@
 							"formdata": [
 								{
 									"key": "first_name",
-									"value": "test",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "last_name",
-									"value": "test",
+									"value": "",
 									"type": "text"
-								},
-								{
-									"key": "date_of_birth",
-									"value": "2001-01-25",
-									"type": "text",
-									"description": "yyyy-mm-dd"
 								},
 								{
 									"key": "gender",
-									"value": "male",
+									"value": "",
 									"type": "text",
-									"description": "['male', 'female']"
+									"description": "male, female"
 								},
 								{
-									"key": "address",
-									"value": "test",
-									"type": "text"
-								},
-								{
-									"key": "phone_number",
-									"value": "01142221039",
-									"type": "text",
-									"description": "string of 11 length"
-								},
-								{
-									"key": "last_checkup_date",
-									"value": "2001-01-25",
+									"key": "date_of_birth",
+									"value": "",
 									"type": "text",
 									"description": "yyyy-mm-dd"
 								},
 								{
-									"key": "medical_history",
-									"value": "test",
+									"key": "occupation",
+									"value": "",
 									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "",
+									"type": "text",
+									"description": "11 length string"
+								},
+								{
+									"key": "marriage",
+									"value": "null",
+									"type": "text",
+									"description": "{\n   \"marital_status\": \"Married\",\n   \"marriage_info\": {\n      \"children_number\": 1,\n      \"age_of_the_youngest\": 13\n   }\n}"
+								},
+								{
+									"key": "education_level",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "habits_of_medical_importance",
+									"value": "null",
+									"type": "text",
+									"description": "{\n   \"smoking\": {\n      \"smoking\": \"True\",\n      \"smoking_info\": [\n         {\n            \"rate\": \"5/d\",\n            \"type\": \"RED LM\"\n         }\n      ]\n   },\n   \"other_habits\": {\n      \"habit\": \"habit\"\n   },\n   \"smoking_cessation\": {\n\t   \"smoking_cessation\": \"True\",\n\t   \"duration\": \"من بكرا\",\n   },\n   \"mestruation\": {\n      \"type\": \"-mestruation_type-\",\n      \"gravida_number\": \"-gravida_number-\",\n      \"abortion_number\": \"-abortion_number-\"\n   },\n   \"contraception\": {\n      \"contraception\": \"-is_contracepted-\",\n      \"method\":[\n\t\t\"methods\"\n\t  ]\n   }\n}"
+								},
+								{
+									"key": "complaints",
+									"value": "null",
+									"type": "text",
+									"description": "{\n   \"symptoms\": [\n      {\n         \"onset\": \"\",\n         \"course\": \"\",\n         \"duration\": \"\",\n         \"site\": \"\",\n         \"radiation\": \"\",\n         \"increased_by\": \"\",\n         \"decreased_by\": \"\",\n         \"previous\": \"\"\n      }\n   ]\n}"
+								},
+								{
+									"key": "past_history",
+									"value": "null",
+									"type": "text",
+									"description": "{\n   \"medical\": [\n      \"HTN\"\n   ],\n   \"blood_transfusion\": [\n      \"NO\"\n   ],\n   \"drugs_for_chronic_diseases\": [\n      \"antiHTN\"\n   ],\n   \"allgery\": {\n      \"allgery\": \"True\",\n      \"specification\": \"\"\n   }\n}"
+								},
+								{
+									"key": "family_history",
+									"value": "null",
+									"type": "text",
+									"description": "{\n   \"family_history\": [\n      \"Similar Condition\"\n   ]\n}"
 								}
 							]
 						},
@@ -113,9 +140,146 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete Patient",
+					"id": "e0f8c2f4-8d21-4165-81b2-b4ae24dddb6a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/patient/6/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"patient",
+								"6",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"id": "67739f18-f362-4a19-8815-790aee05537f"
+			"id": "67739f18-f362-4a19-8815-790aee05537f",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cea427f9-b8f3-465b-b9d8-8ab9b58b7d2c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "49423412-0730-4e94-860e-fa3d0bf187b6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "Optain A Token",
+					"id": "5c260df5-51df-4f64-be57-86fe83acdc83",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "hazem",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/token/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "e2c8bab1-1fcc-4acd-a74f-f0c74746e2c6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "d19c65a7-b0d6-4136-b4d9-b664b0f88d1b"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "90ca2e70-d549-4148-8aaf-9517e1e04e50",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3f1e778e-6879-4d63-8f9b-0acfd68c9b88",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
