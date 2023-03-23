@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:application/presentation/resources/asstes_manager.dart';
+import 'package:application/presentation/screens/clincs/clinics.dart';
 import 'package:application/presentation/screens/home/home.dart';
 import 'package:application/presentation/screens/settings/settings.dart';
 import 'package:flutter/foundation.dart';
@@ -71,6 +75,22 @@ class App extends StatelessWidget {
         return FluentApp.router(
           routeInformationParser: router.routeInformationParser,
           routerDelegate: router.routerDelegate,
+          themeMode: appTheme.mode,
+          theme: FluentThemeData(
+            accentColor: appTheme.color,
+            visualDensity: VisualDensity.standard,
+            focusTheme: FocusThemeData(
+              glowFactor: is10footScreen() ? 2.0 : 0.0,
+            ),
+          ),
+          darkTheme: FluentThemeData(
+            brightness: Brightness.dark,
+            accentColor: appTheme.color,
+            visualDensity: VisualDensity.standard,
+            focusTheme: FocusThemeData(
+              glowFactor: is10footScreen() ? 2.0 : 0.0,
+            ),
+          ),
           color: appTheme.color,
           builder: (context, child) {
             return Directionality(
@@ -107,10 +127,13 @@ class HomeLayout extends StatefulWidget {
   State<HomeLayout> createState() => _HomeLayoutState();
 }
 
-class _HomeLayoutState extends State<HomeLayout> {
+class _HomeLayoutState extends State<HomeLayout> with WindowListener {
   bool smallScreenWidth = false;
   bool isMobile = false;
   final viewKey = GlobalKey(debugLabel: 'Navigation View Key');
+  final searchKey = GlobalKey(debugLabel: 'Search Bar Key');
+  final searchFocusNode = FocusNode();
+  final searchController = TextEditingController();
   final List<NavigationPaneItem> originalItems = [
     PaneItem(
       key: const Key('/'),
@@ -121,9 +144,20 @@ class _HomeLayoutState extends State<HomeLayout> {
         if (router.location != '/') router.pushNamed('home');
       },
     ),
-    PaneItemHeader(header: const Text('Inputs')),
+    // PaneItemHeader(header: const Text('Inputs')),
   ];
   final List<NavigationPaneItem> footerItems = [
+    PaneItem(
+      key: const Key('/add_patient'),
+      icon: const Icon(FluentIcons.add),
+      title: const Text('Add patient'),
+      body: const SizedBox.shrink(),
+      onTap: () {
+        if (router.location != '/add_patient') {
+          router.pushNamed('add_patient');
+        }
+      },
+    ),
     PaneItemSeparator(),
     PaneItem(
       key: const Key('/settings'),
@@ -163,6 +197,27 @@ class _HomeLayoutState extends State<HomeLayout> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    windowManager.addListener(this);
+    isMobile = Platform.isAndroid && Platform.isIOS;
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    searchFocusNode.dispose();
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    smallScreenWidth = MediaQuery.of(context).size.width <= 400;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final localizations = FluentLocalizations.of(context);
 
@@ -174,6 +229,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       }
     }
     return NavigationView(
+      key: viewKey,
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
         leading: smallScreenWidth
@@ -203,7 +259,6 @@ class _HomeLayoutState extends State<HomeLayout> {
                       }),
                     ),
                   ),
-                  //
                   child: smallScreenWidth
                       ? const SizedBox.shrink()
                       : Builder(
@@ -230,7 +285,7 @@ class _HomeLayoutState extends State<HomeLayout> {
             );
           }
           return smallScreenWidth
-              ? null
+              ? const DragToMoveArea(child: SizedBox.shrink())
               : const DragToMoveArea(
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
@@ -283,16 +338,86 @@ class _HomeLayoutState extends State<HomeLayout> {
                 ],
               ).createShader(rect);
             },
-            child: const FlutterLogo(
-              style: FlutterLogoStyle.horizontal,
-              size: 80.0,
-              textColor: Colors.white,
-              duration: Duration.zero,
+            child: Row(
+              children: [
+                Image.asset(
+                  AssetsManager.logo,
+                  height: 80,
+                ),
+                Text(
+                  "Bedaya",
+                  style: FluentTheme.of(context)
+                      .typography
+                      .title
+                      ?.copyWith(fontSize: 18),
+                ),
+              ],
             ),
           ),
         ),
+        displayMode: appTheme.displayMode,
+        indicator: () {
+          switch (appTheme.indicator) {
+            case NavigationIndicators.end:
+              return const EndNavigationIndicator();
+            case NavigationIndicators.sticky:
+              return const StickyNavigationIndicator();
+          }
+        }(),
+        autoSuggestBox: AutoSuggestBox(
+          items: originalItems.whereType<PaneItem>().map((item) {
+            assert(item.title is Text);
+            final text = (item.title as Text).data!;
+            return AutoSuggestBoxItem(
+                value: text,
+                label: text,
+                onSelected: () {
+                  item.onTap!.call();
+                  searchController.clear();
+                });
+          }).toList(),
+          trailingIcon: IconButton(
+            onPressed: () {},
+            icon: const Icon(FluentIcons.search),
+          ),
+          placeholder: "Search",
+        ),
       ),
     );
+  }
+
+  @override
+  void onWindowClose() async {
+    // super.onWindowClose();
+    // bool closeWindowPrevented = await windowManager.isPreventClose();
+    windowManager.isPreventClose().then((value) {
+      if (value) {
+        showDialog(
+          context: context,
+          builder: (_) {
+            return ContentDialog(
+              title: const Text("Confirm close"),
+              content: const Text("Are you sure you want to close this window"),
+              actions: [
+                FilledButton(
+                  child: const Text('Yes'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    windowManager.destroy();
+                  },
+                ),
+                Button(
+                  child: const Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
   }
 }
 
@@ -333,6 +458,13 @@ final GoRouter router = GoRouter(navigatorKey: _rootNavigatorKey, routes: [
             path: '/settings',
             name: 'settings',
             builder: (context, state) => const Settings()),
+        GoRoute(
+            path: '/add_patient',
+            name: 'add_patient',
+            builder: (context, state) => const Settings()),
       ]),
-  GoRoute(path: '/', builder: (context, state) => const Home())
+  GoRoute(
+      path: '/clinics',
+      name: "clinics",
+      builder: (context, state) => const ClinicsScreen())
 ]);
