@@ -1,5 +1,7 @@
 from django.db import models
 from .utils import *
+import json
+from django.contrib.postgres.fields import JSONField
 
 class Family_History(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -18,23 +20,29 @@ class Contraception_Info(models.Model):
 class Patient(models.Model):
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')
-    date_of_birth = models.DateField()
     gender = models.CharField(max_length=6, choices=[('male', 'Male'), ('female', 'Female')])
-    Occupation = models.CharField(max_length=50, default='')
-    mobile_number = models.CharField(max_length=11)
-    marital_status = models.CharField(max_length=50, choices=[('single', 'Single'), ('married', 'Married'), ('divorced', 'Divorced'), ('widowed', 'Widowed')], default='single')
+    date_of_birth = models.DateField()
+    occupation = models.CharField(max_length=50, default='')
+    mobile_number = models.CharField(max_length=11, null=True)
+    #marital_status = models.CharField(max_length=50, choices=[('single', 'Single'), ('married', 'Married'), ('divorced', 'Divorced'), ('widowed', 'Widowed')], default='single')
+    marriage = models.JSONField(default=dict, null=True)
     education_level = models.CharField(max_length=50, choices=[('illiterate', 'Illiterate'), ('read and write', 'Read and Write'), ('primary', 'Primary'), ('preparatory', 'Preparatory'), ('secondary', 'Secondary'), ('university', 'University'), ('postgraduate', 'Postgraduate')], default='illiterate')
-    smoking = models.BooleanField(default=False)
-    smoking_cessation = models.BooleanField(default=False)
+    
+    habits_of_medical_importance = models.JSONField(default=dict, null=True)
+    complaints = models.JSONField(default=dict, null=True)
 
-    family_history = models.ManyToManyField(Family_History)
-
+    past_history = models.JSONField(default=dict, null=True)
+    family_history = models.JSONField(default=dict, null=True)
+    
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}" 
+    
 
-class Complaint(models.Model):
-    symptom = models.CharField(max_length=50)
-    code = models.ForeignKey(Patient, on_delete=models.CASCADE)
+
+#class Complaint(models.Model):
+#    symptom = models.CharField(max_length=50)
+#    code = models.ForeignKey(Patient, on_delete=models.CASCADE)
 
 class UrinAnalysisReport(models.Model):
     status = models.CharField(max_length=10, choices=[('pending', 'Pending'), ('finished', 'Finished'), ('cancelled', 'Cancelled')])
