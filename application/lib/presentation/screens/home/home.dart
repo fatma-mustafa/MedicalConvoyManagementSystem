@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
               children: [
                 Button(
                   onPressed: () {
-                    router.pushNamed('clinics');
+                    // router.pushNamed('clinics');
                   },
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,

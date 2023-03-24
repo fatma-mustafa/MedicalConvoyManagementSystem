@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:application/presentation/resources/asstes_manager.dart';
-import 'package:application/presentation/screens/clincs/clinics.dart';
+import 'package:application/presentation/screens/add_patient/add_patient.dart';
 import 'package:application/presentation/screens/home/home.dart';
 import 'package:application/presentation/screens/settings/settings.dart';
 import 'package:flutter/foundation.dart';
@@ -112,8 +112,8 @@ class App extends StatelessWidget {
   }
 }
 
-class HomeLayout extends StatefulWidget {
-  const HomeLayout({
+class MainLayout extends StatefulWidget {
+  const MainLayout({
     super.key,
     required this.child,
     required this.shellContext,
@@ -124,10 +124,10 @@ class HomeLayout extends StatefulWidget {
   final GoRouterState state;
 
   @override
-  State<HomeLayout> createState() => _HomeLayoutState();
+  State<MainLayout> createState() => _MainLayoutState();
 }
 
-class _HomeLayoutState extends State<HomeLayout> with WindowListener {
+class _MainLayoutState extends State<MainLayout> with WindowListener {
   bool smallScreenWidth = false;
   bool isMobile = false;
   final viewKey = GlobalKey(debugLabel: 'Navigation View Key');
@@ -443,28 +443,30 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(navigatorKey: _rootNavigatorKey, routes: [
   ShellRoute(
-      navigatorKey: _shellNavigatorKey,
-      builder: (context, state, child) {
-        return HomeLayout(
-          shellContext: _shellNavigatorKey.currentContext,
-          state: state,
-          child: child,
-        );
-      },
-      routes: [
-        GoRoute(
-            path: '/', name: 'home', builder: (context, state) => const Home()),
-        GoRoute(
-            path: '/settings',
-            name: 'settings',
-            builder: (context, state) => const Settings()),
-        GoRoute(
-            path: '/add_patient',
-            name: 'add_patient',
-            builder: (context, state) => const Settings()),
-      ]),
-  GoRoute(
-      path: '/clinics',
-      name: "clinics",
-      builder: (context, state) => const ClinicsScreen())
+    navigatorKey: _shellNavigatorKey,
+    builder: (context, state, child) {
+      return MainLayout(
+        shellContext: _shellNavigatorKey.currentContext,
+        state: state,
+        child: child,
+      );
+    },
+    routes: [
+      GoRoute(
+        path: '/',
+        name: 'home',
+        builder: (context, state) => const Home(),
+      ),
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const Settings(),
+      ),
+      GoRoute(
+        path: '/add_patient',
+        name: 'add_patient',
+        builder: (context, state) => const AddPatientScreen(),
+      ),
+    ],
+  ),
 ]);
