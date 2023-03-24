@@ -1,0 +1,92 @@
+// Personal_Information
+{
+	"Personal_Information": {
+		"first_name": "",
+		"last_name": "",
+		"gender": "",
+		"date_of_birth": "",
+		"occupation": "",
+		"mobile_number": "",
+		"education_level": "",
+	}
+}
+
+// Marital Status
+{
+   "marital_status": "Married",
+   "marriage_info": {
+      "children_number": 1,
+      "age_of_the_youngest": 13
+   }
+}
+
+// Habits of Medical Importance
+{
+   "smoking": {
+      "smoking": "True",
+      "smoking_info": [
+         {
+            "rate": "5/d",
+            "type": "RED LM"
+         }
+      ]
+   },
+   "other_habits": {
+      "habit": "habit"
+   },
+   "smoking_cessation": {
+	   "smoking_cessation": "True",
+	   "duration": "من بكرا",
+   },
+   "mestruation": {
+      "type": "-mestruation_type-",
+      "gravida_number": "-gravida_number-",
+      "abortion_number": "-abortion_number-"
+   },
+   "contraception": {
+      "contraception": "-is_contracepted-",
+      "method":[
+		"methods"
+	  ]
+   }
+}
+
+// Complaint
+{
+   "symptoms": [
+      {
+         "onset": "",
+         "course": "",
+         "duration": "",
+         "site": "",
+         "radiation": "",
+         "increased_by": "",
+         "decreased_by": "",
+         "previous": ""
+      }
+   ]
+}
+
+// Past History
+{
+   "medical": [
+      "HTN"
+   ],
+   "blood_transfusion": [
+      "NO"
+   ],
+   "drugs_for_chronic_diseases": [
+      "antiHTN"
+   ],
+   "allgery": {
+      "allgery": "True",
+      "specification": ""
+   }
+}
+
+// Family History
+{
+   "family_history": [
+      "Similar Condition"
+   ]
+}
