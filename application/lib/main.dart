@@ -214,6 +214,7 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     smallScreenWidth = MediaQuery.of(context).size.width <= 400;
   }
 
@@ -231,6 +232,7 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
     return NavigationView(
       key: viewKey,
       appBar: NavigationAppBar(
+        height: 30,
         automaticallyImplyLeading: false,
         leading: smallScreenWidth
             ? null
@@ -264,7 +266,7 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
                       : Builder(
                           builder: (context) => PaneItem(
                             icon: const Center(
-                                child: Icon(FluentIcons.back, size: 12.0)),
+                                child: Icon(FluentIcons.back, size: 10.0)),
                             title: Text(localizations.backButtonTooltip),
                             body: const SizedBox.shrink(),
                             enabled: enabled,
@@ -286,10 +288,16 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
           }
           return smallScreenWidth
               ? const DragToMoveArea(child: SizedBox.shrink())
-              : const DragToMoveArea(
+              : DragToMoveArea(
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text(appTitle),
+                    child: Text(
+                      appTitle,
+                      style:
+                          FluentTheme.of(context).typography.caption?.copyWith(
+                                fontSize: 11,
+                              ),
+                    ),
                   ),
                 );
         }(),
@@ -297,16 +305,24 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
           Padding(
             padding:
                 EdgeInsetsDirectional.only(end: 8.0, top: isMobile ? 10 : 0),
-            child: ToggleSwitch(
-              content: const Text('Dark Mode'),
-              checked: FluentTheme.of(context).brightness.isDark,
-              onChanged: (v) {
-                if (v) {
-                  appTheme.mode = ThemeMode.dark;
-                } else {
-                  appTheme.mode = ThemeMode.light;
-                }
-              },
+            child: SizedBox(
+              height: 25,
+              child: ToggleSwitch(
+                content: Text(
+                  'Dark Mode',
+                  style: FluentTheme.of(context).typography.caption?.copyWith(
+                        fontSize: 11,
+                      ),
+                ),
+                checked: FluentTheme.of(context).brightness.isDark,
+                onChanged: (v) {
+                  if (v) {
+                    appTheme.mode = ThemeMode.dark;
+                  } else {
+                    appTheme.mode = ThemeMode.light;
+                  }
+                },
+              ),
             ),
           ),
           if (!kIsWeb && !isMobile) const WindowButtons(),
@@ -356,6 +372,7 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
           ),
         ),
         displayMode: appTheme.displayMode,
+        // displayMode: PaneDisplayMode.top,
         indicator: () {
           switch (appTheme.indicator) {
             case NavigationIndicators.end:

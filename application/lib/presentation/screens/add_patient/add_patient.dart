@@ -1,56 +1,393 @@
+import 'package:application/presentation/resources/color_manager.dart';
 import 'package:application/presentation/resources/values_manager.dart';
 import 'package:application/providers/marital_status.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 
-class AddPatientScreen extends StatefulWidget {
+class AddPatientScreen extends StatelessWidget {
   const AddPatientScreen({super.key});
 
   @override
-  State<AddPatientScreen> createState() => _AddPatientScreenState();
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppPadding.p25),
+          child: ScaffoldPage.scrollable(
+            children: [
+              Text("Add new patient",
+                  style: FluentTheme.of(context).typography.title),
+              const SizedBox(height: AppSize.s10),
+              Text(
+                  "In this section you can add a new patient, you can specify if the new patient is adult or child",
+                  style: FluentTheme.of(context).typography.body),
+              const SizedBox(height: AppSize.s10),
+              // TODO: Add Stepper
+              // SizedBox(
+              //     height: screenHeight / 7.3,
+              //     // width: 100,
+              //     child: const StepperSection()),
+              const SizedBox(height: AppSize.s10),
+              const PersonalInfo(),
+              const SizedBox(height: AppSize.s10),
+
+              const HabitsOfMImportance(),
+            ],
+          ),
+        ),
+        const Align(
+          alignment: Alignment.bottomCenter,
+          child: StackedButton(),
+        ),
+      ],
+    );
+  }
 }
 
-class _AddPatientScreenState extends State<AddPatientScreen> {
-  double screenWidth = 0.0;
-  bool midScreenWidth = false;
-  bool smallScreenWidth = false;
-  bool largeScreenWidth = false;
-  bool veryLargeScreenWidth = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // screenWidth = MediaQuery.of(context).size.width;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    screenWidth = MediaQuery.of(context).size.width;
-
-    smallScreenWidth = screenWidth < 400;
-    midScreenWidth = screenWidth < 800;
-    largeScreenWidth = screenWidth > 800 && screenWidth < 1000;
-    veryLargeScreenWidth = screenWidth > 1000;
-    print(screenWidth);
-  }
+class StackedButton extends StatelessWidget {
+  const StackedButton({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage.scrollable(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppPadding.p8),
+      child: SizedBox(
+        width: 160,
+        height: 35,
+        child: Card(
+          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p6),
+          backgroundColor: ColorManager.secondary,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                child: Center(
+                  child: FilledButton(
+                    onPressed: () {},
+                    style: const ButtonStyle(),
+                    child: Text(
+                      "Save & Continue",
+                      style:
+                          FluentTheme.of(context).typography.caption?.copyWith(
+                                fontSize: 9,
+                              ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HabitsOfMImportance extends StatelessWidget {
+  const HabitsOfMImportance({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Add new patient",
-            style: FluentTheme.of(context).typography.title),
-        const SizedBox(height: AppSize.s10),
         Text(
-            "In this section you can add a new patient, you can specify if the new patient is adult or child",
-            style: FluentTheme.of(context).typography.body),
-        const SizedBox(height: AppSize.s10),
-        Text("Personal Info",
-            style: FluentTheme.of(context)
-                .typography
-                .title
-                ?.copyWith(fontSize: 20)),
+          "Habits of Medical Importance",
+          style:
+              FluentTheme.of(context).typography.title?.copyWith(fontSize: 20),
+        ),
+        const SizedBox(height: AppSize.s5),
+        Card(
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                BinarySmokingStatus(),
+                SizedBox(height: AppSize.s10),
+                SmokingCessation(),
+                SizedBox(height: AppSize.s10),
+
+                Menstruation(),
+                SizedBox(height: AppSize.s10),
+
+                Contraception(),
+                // InfoLabel(
+                //   label: "Education Level:",
+                //   child: const EducationLevel(),
+                // ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class Contraception extends StatefulWidget {
+  const Contraception({super.key});
+
+  @override
+  State<Contraception> createState() => _ContraceptionState();
+}
+
+class _ContraceptionState extends State<Contraception> {
+  int selected = 1;
+
+  String selectedStatus = "No";
+  List<String> status = ["Yes", "No"];
+  String selectedMethod = "IUD";
+  List<String> contraceptionMethods = ["IUD", "Implant", "COC", "Other"];
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoLabel(
+      label: "Contraception:",
+      // isHeader: false,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 10,
+        runSpacing: 20,
+        children: [
+          ...List.generate(status.length, (index) {
+            return RadioButton(
+              checked: index == selected,
+              onChanged: (checked) {
+                selected = index;
+                selectedStatus = status[index];
+                setState(() {});
+              },
+              content: SizedBox(
+                width: 110,
+                child: Text(status[index]),
+              ),
+            );
+          }),
+          if (selectedStatus.toLowerCase() != "no") ...{
+            InfoLabel(
+              label: "Method",
+              child: SizedBox(
+                width: 120,
+                child: ComboBox<String>(
+                  value: selectedMethod,
+                  items: contraceptionMethods.map((item) {
+                    return ComboBoxItem<String>(
+                      value: item,
+                      child: Text(item),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    selectedMethod = value ?? selectedMethod;
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+            if (selectedMethod == "Other")
+              InfoLabel(
+                label: "Specify",
+                child: const SizedBox(
+                  width: 100,
+                  child: TextBox(),
+                ),
+              ),
+          },
+        ],
+      ),
+    );
+  }
+}
+
+class Menstruation extends StatelessWidget {
+  const Menstruation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> menstruations = ["Regular", "Irregular", "Menopause"];
+    return Wrap(
+      spacing: 10,
+      runSpacing: 20,
+      children: [
+        InfoLabel(
+          label: "Menstruation:",
+          child: RadioButtonsHorizontal(list: menstruations),
+        ),
+        InfoLabel(
+          label: "Gravid Number",
+          child: const SizedBox(
+            width: 100,
+            child: TextBox(),
+          ),
+        ),
+        InfoLabel(
+          label: "Abortion Number",
+          child: const SizedBox(
+            width: 100,
+            child: TextBox(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SmokingCessation extends StatefulWidget {
+  const SmokingCessation({super.key});
+
+  @override
+  State<SmokingCessation> createState() => _SmokingCessationState();
+}
+
+class _SmokingCessationState extends State<SmokingCessation> {
+  int selected = 1;
+  String selectedSmokingStatus = "No";
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> smokingStatus = ["Yes", "No"];
+    return InfoLabel(
+      label: "Smoking Cessation:",
+      // isHeader: false,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 10,
+        runSpacing: 10,
+        children: [
+          ...List.generate(smokingStatus.length, (index) {
+            return RadioButton(
+              checked: index == selected,
+              onChanged: (checked) {
+                selected = index;
+                selectedSmokingStatus = smokingStatus[index];
+                setState(() {});
+              },
+              content: SizedBox(
+                width: 110,
+                child: Text(smokingStatus[index]),
+              ),
+            );
+          }),
+          if (selectedSmokingStatus.toLowerCase() != "no") ...{
+            InfoLabel(
+              label: "Duration",
+              child: const SizedBox(
+                width: 120,
+                child: TextBox(),
+              ),
+            ),
+          },
+        ],
+      ),
+    );
+  }
+}
+
+class BinarySmokingStatus extends StatefulWidget {
+  const BinarySmokingStatus({super.key});
+
+  @override
+  State<BinarySmokingStatus> createState() => _BinarySmokingStatusState();
+}
+
+class _BinarySmokingStatusState extends State<BinarySmokingStatus> {
+  int selected = 1;
+  String selectedSmokingStatus = "No";
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> smokingStatus = ["Yes", "No"];
+    return InfoLabel(
+      label: "Smoking:",
+      // isHeader: false,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 10,
+        runSpacing: 10,
+        children: [
+          ...List.generate(smokingStatus.length, (index) {
+            return RadioButton(
+              checked: index == selected,
+              onChanged: (checked) {
+                selected = index;
+                selectedSmokingStatus = smokingStatus[index];
+                setState(() {});
+              },
+              content: SizedBox(
+                width: 110,
+                child: Text(smokingStatus[index]),
+              ),
+            );
+          }),
+          InfoLabel(
+            label: "Other Habits",
+            child: const SizedBox(
+              width: 140,
+              child: TextBox(),
+            ),
+          ),
+          if (selectedSmokingStatus.toLowerCase() != "no") ...{
+            Row(
+              children: [
+                InfoLabel(
+                  label: "Rate",
+                  child: Row(
+                    children: const [
+                      SizedBox(width: 50, child: TextBox()),
+                      SizedBox(width: AppSize.s10),
+                      Text("/ Day"),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppSize.s10),
+                InfoLabel(
+                  label: "Type",
+                  child: const SizedBox(
+                    width: 120,
+                    child: TextBox(),
+                  ),
+                ),
+              ],
+            ),
+          },
+        ],
+      ),
+    );
+  }
+}
+
+class PersonalInfo extends StatelessWidget {
+  const PersonalInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Personal Info",
+              style: FluentTheme.of(context)
+                  .typography
+                  .title
+                  ?.copyWith(fontSize: 20),
+            ),
+            FilledButton(
+              onPressed: () {},
+              style: const ButtonStyle(),
+              child: Text(
+                "Save & Continue",
+                style: FluentTheme.of(context).typography.caption?.copyWith(
+                      fontSize: 9,
+                    ),
+              ),
+            ),
+          ],
+        ),
         const SizedBox(height: AppSize.s5),
         Card(
           child: SizedBox(
@@ -67,20 +404,25 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     InfoLabel(
                       label: "Patient full name:",
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            maxWidth: (screenWidth >= 1010 &&
-                                        screenWidth <= 1030) ||
-                                    (screenWidth >= 800 && screenWidth <= 830)
-                                ? 350
-                                : 400),
-                        child: SizedBox(
-                            width: screenWidth / 2, child: const TextBox()),
+                        constraints: const BoxConstraints(minWidth: 250),
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return SizedBox(
+                            width: constraints.maxWidth < 400
+                                ? constraints.maxWidth
+                                : constraints.maxWidth > 800
+                                    ? constraints.maxWidth - 400
+                                    : constraints.maxWidth,
+                            child: const TextBox(),
+                          );
+                        }),
                       ),
                     ),
-                    InfoLabel(label: "Sex:", child: const SexComboBox()),
+                    const Sex(),
                     InfoLabel(
                       label: "Age:",
-                      child: const SizedBox(width: 70, child: TextBox()),
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        return const SizedBox(width: 70, child: TextBox());
+                      }),
                     ),
                     const SizedBox(height: 50, child: RadioButtonsVertical()),
                   ],
@@ -90,8 +432,16 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                   label: "Occupation:",
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(minWidth: 250),
-                    child: SizedBox(
-                        width: screenWidth / 3, child: const TextBox()),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return SizedBox(
+                        width: constraints.maxWidth < 400
+                            ? constraints.maxWidth
+                            : constraints.maxWidth > 800
+                                ? constraints.maxWidth - 400
+                                : constraints.maxWidth,
+                        child: const TextBox(),
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(height: AppSize.s10),
@@ -110,6 +460,18 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         ),
       ],
     );
+  }
+}
+
+class Sex extends StatelessWidget {
+  const Sex({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> genders = ["Male", "Female"];
+    return InfoLabel(label: "Sex:", child: CustomComboBox(list: genders));
   }
 }
 
@@ -162,44 +524,50 @@ class _MartialStatusState extends State<MartialStatus> {
                   InfoLabel(
                     label: "Number of children",
                     labelStyle: FluentTheme.of(context).typography.caption,
-                    child: const SizedBox(width: 100, child: TextBox()),
+                    child: const SizedBox(
+                      width: 100,
+                      child: TextBox(),
+                    ),
                   ),
                   const SizedBox(width: AppSize.s10),
                   InfoLabel(
                     label: "Age of the youngest",
                     labelStyle: FluentTheme.of(context).typography.caption,
-                    child: const SizedBox(width: 100, child: TextBox()),
+                    child: const SizedBox(
+                      width: 100,
+                      child: TextBox(),
+                    ),
                   ),
                 ],
               ),
           ],
         );
-
-        // return const SizedBox.shrink();
       },
     );
   }
 }
 
-class SexComboBox extends StatelessWidget {
-  const SexComboBox({
+class CustomComboBox extends StatelessWidget {
+  const CustomComboBox({
     super.key,
+    required this.list,
   });
+  final List<String> list;
 
   @override
   Widget build(BuildContext context) {
-    String selectedSex = "Male";
+    String selectedChoice = list[0];
     return StatefulBuilder(builder: (context, setState) {
       return ComboBox<String>(
-        value: selectedSex,
-        items: ["Male", "Female"].map((sex) {
+        value: selectedChoice,
+        items: list.map((item) {
           return ComboBoxItem<String>(
-            value: sex,
-            child: Text(sex),
+            value: item,
+            child: Text(item),
           );
         }).toList(),
         onChanged: (value) {
-          selectedSex = value ?? selectedSex;
+          selectedChoice = value ?? selectedChoice;
           setState(() {});
         },
       );
@@ -264,7 +632,7 @@ class _RadioButtonsHorizontalState extends State<RadioButtonsHorizontal> {
             }
             setState(() {});
           },
-          content: Text(widget.list[index]),
+          content: SizedBox(width: 110, child: Text(widget.list[index])),
         );
       }),
     );
