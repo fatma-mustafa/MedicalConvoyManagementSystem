@@ -1,34 +1,38 @@
 from .models import *
 from rest_framework import serializers
 from .utils import *
-from .custom_serializer import custom_serializer
+from .filters import *
+from django_filters.rest_framework import DjangoFilterBackend
 
-class PatientSerializer(serializers.HyperlinkedModelSerializer):
+class ComplaintsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Complaints
+        fields = '__all__'
+
+    def create(self, validated_data):
+        print(validated_data)
+        return super().create(validated_data)
+    
+class FollowUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=FollowUp
+        fields='__all__'
+
+class ClinicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Clinics
+        fields = '__all__'
+
+class PatientSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Patient
+        filter_backends = [DjangoFilterBackend]
+        filterset_fields = ['name', 'code']
         fields = "__all__"
-
-class MarriageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Marriage
-        fields = "__all__"
+    
 
 class UrinanalysisReportSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UrinAnalysisReport
         fields = "__all__"
 
-class Family_History_Serializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Family_History
-        fields = "__all__"
-
-class Contraception_Method_Serializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Contraception_Method
-        fields = "__all__"
-
-#class Contraception_Info_Serializer(serializers.HyperlinkedModelSerializer):
-#    class Meta:
-#        model = Contraception_Info
-#        fields = "__all__"
