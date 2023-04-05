@@ -27,9 +27,9 @@ class AddPatientScreen extends StatelessWidget {
               //     height: screenHeight / 7.3,
               //     // width: 100,
               //     child: const StepperSection()),
-              const SizedBox(height: AppSize.s10),
+              const SizedBox(height: AppSize.s20),
               const PersonalInfo(),
-              const SizedBox(height: AppSize.s10),
+              const SizedBox(height: AppSize.s20),
 
               const HabitsOfMImportance(),
             ],
@@ -53,34 +53,40 @@ class StackedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppPadding.p8),
-      child: SizedBox(
-        width: 160,
-        height: 35,
-        child: Card(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p6),
-          backgroundColor: ColorManager.secondary,
-          child: Row(
-            children: [
-              SizedBox(
-                width: 90,
-                child: Center(
-                  child: FilledButton(
-                    onPressed: () {},
-                    style: const ButtonStyle(),
-                    child: Text(
-                      "Save & Continue",
-                      style:
-                          FluentTheme.of(context).typography.caption?.copyWith(
+      child: LayoutBuilder(builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth - 150,
+          height: 50,
+          child: Card(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p6),
+            backgroundColor: ColorManager.secondary,
+            child: Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 35,
+                    child: FilledButton(
+                      onPressed: () {},
+                      // style: const ButtonStyle(),
+                      child: Center(
+                        child: Text(
+                          "Save & Continue",
+                          style: FluentTheme.of(context)
+                              .typography
+                              .caption
+                              ?.copyWith(
                                 fontSize: 9,
                               ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
@@ -98,7 +104,7 @@ class HabitsOfMImportance extends StatelessWidget {
           style:
               FluentTheme.of(context).typography.title?.copyWith(fontSize: 20),
         ),
-        const SizedBox(height: AppSize.s5),
+        const SizedBox(height: AppSize.s10),
         Card(
           child: SizedBox(
             width: double.infinity,
@@ -323,9 +329,16 @@ class _BinarySmokingStatusState extends State<BinarySmokingStatus> {
           }),
           InfoLabel(
             label: "Other Habits",
-            child: const SizedBox(
+            child: SizedBox(
               width: 140,
-              child: TextBox(),
+              child: TextBox(
+                placeholder: 'Ex: Alcoholic',
+                placeholderStyle:
+                    FluentTheme.of(context).typography.caption?.copyWith(
+                          color: ColorManager.lightGrey.withAlpha(220),
+                          fontSize: 13,
+                        ),
+              ),
             ),
           ),
           if (selectedSmokingStatus.toLowerCase() != "no") ...{
@@ -366,29 +379,12 @@ class PersonalInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Personal Info",
-              style: FluentTheme.of(context)
-                  .typography
-                  .title
-                  ?.copyWith(fontSize: 20),
-            ),
-            FilledButton(
-              onPressed: () {},
-              style: const ButtonStyle(),
-              child: Text(
-                "Save & Continue",
-                style: FluentTheme.of(context).typography.caption?.copyWith(
-                      fontSize: 9,
-                    ),
-              ),
-            ),
-          ],
+        Text(
+          "Personal Info",
+          style:
+              FluentTheme.of(context).typography.title?.copyWith(fontSize: 20),
         ),
-        const SizedBox(height: AppSize.s5),
+        const SizedBox(height: AppSize.s10),
         Card(
           child: SizedBox(
             width: double.infinity,
@@ -412,7 +408,17 @@ class PersonalInfo extends StatelessWidget {
                                 : constraints.maxWidth > 800
                                     ? constraints.maxWidth - 400
                                     : constraints.maxWidth,
-                            child: const TextBox(),
+                            child: TextBox(
+                              placeholder: 'Ex: Hamza Nasser Hasan Abdoulaziz',
+                              placeholderStyle: FluentTheme.of(context)
+                                  .typography
+                                  .caption
+                                  ?.copyWith(
+                                    color:
+                                        ColorManager.lightGrey.withAlpha(220),
+                                    fontSize: 13,
+                                  ),
+                            ),
                           );
                         }),
                       ),
@@ -421,10 +427,22 @@ class PersonalInfo extends StatelessWidget {
                     InfoLabel(
                       label: "Age:",
                       child: LayoutBuilder(builder: (context, constraints) {
-                        return const SizedBox(width: 70, child: TextBox());
+                        return SizedBox(
+                          width: 70,
+                          child: TextBox(
+                            placeholder: 'Ex: 32',
+                            placeholderStyle: FluentTheme.of(context)
+                                .typography
+                                .caption
+                                ?.copyWith(
+                                  color: ColorManager.lightGrey.withAlpha(220),
+                                  fontSize: 13,
+                                ),
+                          ),
+                        );
                       }),
                     ),
-                    const SizedBox(height: 50, child: RadioButtonsVertical()),
+                    // const SizedBox(height: 50, child: RadioButtonsVertical()),
                   ],
                 ),
                 const SizedBox(height: AppSize.s10),
@@ -439,7 +457,17 @@ class PersonalInfo extends StatelessWidget {
                             : constraints.maxWidth > 800
                                 ? constraints.maxWidth - 400
                                 : constraints.maxWidth,
-                        child: const TextBox(),
+                        child: TextBox(
+                          placeholder:
+                              'Ex: Mathematics teacher at Elmarg secondary school',
+                          placeholderStyle: FluentTheme.of(context)
+                              .typography
+                              .caption
+                              ?.copyWith(
+                                color: ColorManager.lightGrey.withAlpha(220),
+                                fontSize: 13,
+                              ),
+                        ),
                       );
                     }),
                   ),
