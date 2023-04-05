@@ -88,7 +88,7 @@ class App extends StatelessWidget {
           themeMode: appTheme.mode,
           theme: FluentThemeData(
             scaffoldBackgroundColor: ColorManager.secondaryDark,
-            menuColor: ColorManager.secondary,
+            // menuColor: ColorManager.secondary,
             accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
@@ -98,6 +98,11 @@ class App extends StatelessWidget {
           darkTheme: FluentThemeData(
             brightness: Brightness.dark,
             accentColor: appTheme.color,
+            scaffoldBackgroundColor: ColorManager.blueDark.withAlpha(200),
+            navigationPaneTheme: const NavigationPaneThemeData(
+              backgroundColor: ColorManager.blueDark,
+            ),
+            // menuColor: ColorManager.secondary,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen() ? 2.0 : 0.0,
@@ -415,6 +420,7 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
       },
       pane: NavigationPane(
         // size: const NavigationPaneSize(openMaxWidth: 260),
+
         items: originalItems,
         footerItems: footerItems,
         onChanged: (index) {
@@ -454,8 +460,8 @@ class _MainLayoutState extends State<MainLayout> with WindowListener {
             ),
           ),
         ),
-        // displayMode: appTheme.displayMode,
-        displayMode: PaneDisplayMode.compact,
+        displayMode: appTheme.displayMode,
+        // displayMode: PaneDisplayMode.compact,
         indicator: () {
           switch (appTheme.indicator) {
             case NavigationIndicators.end:

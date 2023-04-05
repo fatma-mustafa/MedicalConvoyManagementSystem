@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 class ColorManager {
   static const Color primary = Color(0xff019F3F); // #F1F3F6
   static const Color primaryDark = Color(0xff008F3A); // #737981
-  
 
   static const Color secondary = Color(0xffB7E6C9); // ##DDE4EC
   static const Color secondaryDark = Color(0xffD2D8D3); // ##26C1FF
@@ -23,6 +22,7 @@ class ColorManager {
   static const Color grey = Color(0xff838383);
   static const Color moreLightGrey = Color(0xffF8F8F8);
   static const Color black = Color(0xff000000);
+  static const Color blueDark = Color.fromARGB(255, 0, 8, 20);
 
   // new colors
   static Color darkPrimary = const Color(0xffd17d11);

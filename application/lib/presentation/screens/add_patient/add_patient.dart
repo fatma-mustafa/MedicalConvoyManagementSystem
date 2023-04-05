@@ -35,10 +35,10 @@ class AddPatientScreen extends StatelessWidget {
             ],
           ),
         ),
-        const Align(
-          alignment: Alignment.bottomCenter,
-          child: StackedButton(),
-        ),
+        // const Align(
+        //   alignment: Alignment.bottomCenter,
+        //   child: StackedButton(),
+        // ),
       ],
     );
   }
